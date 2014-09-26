@@ -131,7 +131,7 @@ while(~isempty(buffer))
     % while again
 end
 % Assignt path delay bound according to source and sink
-delayBound = 100*ones(1,numel(paths));
+delayBound =10*ones(1,numel(paths));
 %% Find the connection matrix
     Con = zeros(size(Adj));
     Exp = 1; % exponentials of A (0-th)

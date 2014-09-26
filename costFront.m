@@ -20,7 +20,7 @@ function [ C ] = costFront(nodeName,nodeComp,Adj,seed,clusters,params )
         for i2 = 1:Nc
             if i1==i2 % internal links
                 continue
-            elseif i1~=Nc || i2~=Nc
+            elseif i1~=Nc && i2~=Nc
                 C = C + 4^c(i1,i2);
             else
                 C = C + 2^c(i1,i2);

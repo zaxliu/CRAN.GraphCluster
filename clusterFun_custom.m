@@ -15,7 +15,7 @@ function [clusters,fval] = clusterFun_custom(nodeName,nodeComp,Adj,paths,delayBo
     %% Set options
     opts = gaoptimset(...%'InitialPopulation', InitPop, ...
                         'StallGenLimit',50,'TolFun',1e-10,...
-                        'Generations',300,'PlotFcns',{@gaplotbestfun,@gaplotbestindiv,@gaplotdistance,@gaplotscores},...
+                        'Generations',300,... %'PlotFcns',{@gaplotbestfun,@gaplotbestindiv,@gaplotdistance,@gaplotscores},...
                         'CreationFcn',initPopFcn,...
                         'MutationFcn',mutationFcn);
     %% Genetic algorithm
@@ -63,7 +63,7 @@ function mutationChildren = mutation_gb(parents,options,GenomeLength,FitnessFcn,
     clusterCon = Con.*repmat(seed,length(seed),1);
     for i = 1:length(parents)
         mutationParent = thisPopulation(parents(i),:);   % extract parent for mutation
-        mutationIndex  = rand(1,length(seed))>0.5;  % decide the mutation position
+        mutationIndex  = rand(1,length(seed))>0.6;  % decide the mutation position
         mutationIndex(seedIndex) = 0;
         for j = 1:length(mutationParent)         
             if mutationIndex(j) == 1    % if decide to mutate
