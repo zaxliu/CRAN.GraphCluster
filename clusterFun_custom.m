@@ -19,7 +19,7 @@ function [clusters,fval] = clusterFun_custom(nodeName,nodeComp,Adj,paths,delayBo
                         'CreationFcn',initPopFcn,...
                         'MutationFcn',mutationFcn);
     %% Genetic algorithm
-    rng(3,'twister') % seeding for random number generator, uncomment if want to reproduce result
+%     rng(3,'twister') % seeding for random number generator, uncomment if want to reproduce result
     [x,fval,exitflag] = ga(fitnessFcn,length(seed),[],[],[],[],lb,ub,[],[],opts);
     if size(x,2)~=1
         clusters = x.';
