@@ -1,10 +1,11 @@
 function [ C ] = costComp( nodeName,nodeComp,Adj,seed,clusters,params )
 %% Compute the total computational cost from a clustering scheme
-    Nc = max(clusters); % num of clusters is assumed to be equal to the maximum number in var 'clusters'
-    c = zeros(Nc,1);
+%  2014.9.2 20:01
+    Nc = max(clusters); % num of clusters is equal to the maximum number in var 'clusters'
+    c = zeros(Nc,1);    % complexity in each cluster
     for n = 1:Nc
         c(n) = sum(nodeComp(clusters==n));
     end
-    C = 1.5.^c(1) + c(2);         
+    C = sum(2.^c(1:(Nc-1))) + 0; % mapping: distributed site has exponential cost, data center has 0 cost
 end
 
