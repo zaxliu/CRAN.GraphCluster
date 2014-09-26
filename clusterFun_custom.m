@@ -1,9 +1,9 @@
-function [clusters,fval] = clusterFun_custom(nodeName,nodeComp,Adj,Con,seed,params)
+function [clusters,fval] = clusterFun_custom(nodeName,nodeComp,Adj,paths,delayBound,Con,seed,params)
 %% Find best clustering scheme using Genetic algorithm
 %  using customized crossover and mutation functions
 %  2014.9.3 20:00
     %% Function handles
-    fitnessFcn = @(clusters) cost(nodeName,nodeComp,Adj,seed,clusters,params);
+    fitnessFcn = @(clusters) cost(nodeName,nodeComp,Adj,paths,delayBound,seed,clusters,params);
     initPopFcn = @(GenomeLength,FitnessFcn,options) pop_gb(GenomeLength,FitnessFcn,options,seed,Con);
     mutationFcn = @(parents,options,GenomeLength,FitnessFcn,state,thisScore,thisPopulation) mutation_gb(parents,options,GenomeLength,FitnessFcn,state,thisScore,thisPopulation,seed,Con);
     
@@ -19,7 +19,7 @@ function [clusters,fval] = clusterFun_custom(nodeName,nodeComp,Adj,Con,seed,para
                         'CreationFcn',initPopFcn,...
                         'MutationFcn',mutationFcn);
     %% Genetic algorithm
-%     rng(3,'twister') % seeding for random number generator, uncomment if want to reproduce result
+    rng(3,'twister') % seeding for random number generator, uncomment if want to reproduce result
     [x,fval,exitflag] = ga(fitnessFcn,length(seed),[],[],[],[],lb,ub,[],[],opts);
     if size(x,2)~=1
         clusters = x.';
@@ -63,7 +63,7 @@ function mutationChildren = mutation_gb(parents,options,GenomeLength,FitnessFcn,
     clusterCon = Con.*repmat(seed,length(seed),1);
     for i = 1:length(parents)
         mutationParent = thisPopulation(parents(i),:);   % extract parent for mutation
-        mutationIndex  = rand(1,length(seed))>0.6;  % decide the mutation position
+        mutationIndex  = rand(1,length(seed))>0.5;  % decide the mutation position
         mutationIndex(seedIndex) = 0;
         for j = 1:length(mutationParent)         
             if mutationIndex(j) == 1    % if decide to mutate

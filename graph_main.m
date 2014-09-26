@@ -1,5 +1,5 @@
 %% Initialization
-clear all;
+% clear all;
 % initialization parameters
 params.nodeType = {'radioTX','radioRX','fft','ifft',...
             'mod','demod','code','decode',...
@@ -23,15 +23,15 @@ params.linkWeight2 = {};
 % seed nodes for custering operation
 params.seedRule1 = {'2|radioTX,radioRX'};  % Cluster seed in the same chain 'N,node1,...nodeN'
 params.seedRule2 = {'2|dataSourceDL,dataSinkUL'};  % cluster seed across chains
-[nodeName,nodeComp,Adj,seed] = init(params);
-[Con] = conection(Adj);
+[nodeName,nodeComp,Adj,paths,delayBound,seed,Con] = init(params);
 %% Cluster, cost
-for n = 1:10
-    [clusters(:,n),fval] = clusterFun_custom(nodeName,nodeComp,Adj,Con,seed,params);
-    disp(fval);
+for n = 1
+    [clusters(:,n),fval(n)] = clusterFun_custom(nodeName,nodeComp,Adj,paths,delayBound,Con,seed,params);
+    [C1(n)] = costComp(nodeName,nodeComp,Adj,seed,clusters,params);
+    [C2(n)] = costFront(nodeName,nodeComp,Adj,seed,clusters,params);
+    [C3(n)] = penaltyDelay(nodeName,nodeComp,Adj,paths,delayBound,seed,clusters,params);
+    disp(fval(n));
 end
-% [ C1 ] = costComp(nodeName,nodeComp,Adj,seed,clusters,params );
-% [ C2 ] = costFront(nodeName,nodeComp,Adj,seed,clusters,params );
 
 %% Exhaustive scaning ( Cannot run simultaneously with clustering )
 % h = figure; hold on;
